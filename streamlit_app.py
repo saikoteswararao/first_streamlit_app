@@ -43,17 +43,19 @@ except URLError as e:
   streamlit.error()
   
     
-  # streamlit.write('The user entered ', fruit_choice)
+streamlit.header("The Fruit load list contains:")
+#Snowflake-related functions
+def get_fruit_load_list():
+  with my_cnx.cursor() as my_cur:
+    my_cur.execute("select * from fruit_load_list")
+    return my_cur.fechall()
+    
+# Add a button to laod the fruit
+if streamlit.button('Get Fruit Load List'):
+	my_cnx = snowflake.connector.connect(**streamlit.secrets["snowflake"])
+  my_data_rows = get_fruit_load_list()
+  streamlit.dataframe(my_data_rows)
 
-# import requests
-
-
-# write your own comment -what does the next line do? 
-# fruityvice_normalized = pandas.json_normalize(fruityvice_response.json())
-# write your own comment - what does this do?
-# streamlit.dataframe(fruityvice_normalized)
-
-#don't run anything past here while we troubleshoot
 streamlit.stop()
 
 # import snowflake.connector
